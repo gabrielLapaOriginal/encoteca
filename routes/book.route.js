@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router()
-const { getBooks, getBook, createBook, updateBook, deleteBook } = require('../controllers/book.controller.js')
+const { getBooks, getBook, createBook, updatefullBook, deleteBook } = require('../service/book.service.js')
 
 /** 
  * @openapi
@@ -109,7 +109,7 @@ const { getBooks, getBook, createBook, updateBook, deleteBook } = require('../co
 router.get('/', getBooks);
 router.get('/:id', getBook);
 router.post('/', createBook)
-router.put('/:id', updateBook)
+router.put('/:id', updatefullBook)
 router.delete('/:id', deleteBook)
 
 

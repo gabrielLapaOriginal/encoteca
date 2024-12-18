@@ -26,7 +26,7 @@ const options = {
           required: ["title", "author", "publishedDate", "genre", "summary", "price"], // Campos obrigatórios
         },
       },
-      "respponses": {
+      "responses": {
         "200": {
           "description": "OK",
           "content": {

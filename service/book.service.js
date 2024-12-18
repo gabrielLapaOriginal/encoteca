@@ -34,10 +34,10 @@ const createBook = async (req, res) =>{
   }
 }
 
-//Atualiza um livro
-const updateBook = async (req, res) =>{
+//Atualiza um livro inteiro
+const updatefullBook = async (req, res) =>{
   try{
-    const {id} = req.params;
+    const { id } = req.params;
     const book = await Book.findByIdAndUpdate(id, req.body)
 
     if(!book){
@@ -67,4 +67,4 @@ const deleteBook = async (req, res) =>{
 }
 
 
-module.exports = {getBooks, getBook, createBook, updateBook, deleteBook}
+module.exports = {getBooks, getBook, createBook, updatefullBook, deleteBook}

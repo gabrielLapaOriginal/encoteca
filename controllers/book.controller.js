@@ -3,10 +3,10 @@ const Book = require("../models/book.model")
 //Retorna todos os livros
 const getBooks = async (req, res) =>{
   try{
-    const page = req.query.p || 0;
+    const page = req.query.p;
     const booksPerPage = 3;
 
-    const books = await Book.find({}).skip(page * booksPerPage).limit(booksPerPage);
+    const books = page ? await Book.find({}).skip(page * booksPerPage).limit(booksPerPage) : await Book.find({});
     res.status(200).json(books);
   }catch (err){
     res.status(500).json({message: err.message})

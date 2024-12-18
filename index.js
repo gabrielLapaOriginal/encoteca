@@ -2,6 +2,7 @@ require('dotenv').config();
 const bookRoute = require('./routes/book.route.js')
 const express = require('express');
 const mongoose = require('mongoose');
+const swaggerDocs = require('./utils/swagger.js');
 
 const app = express();
 
@@ -22,6 +23,7 @@ mongoose.connect(process.env.MONGO_URI)
   console.log("Connected to database!");
   app.listen(PORT, ()=> {
   console.log("Server is running on port 3000")
+  swaggerDocs(app, PORT)
   });
 })
 .catch(() =>{

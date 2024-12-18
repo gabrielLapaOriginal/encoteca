@@ -34,6 +34,22 @@ const createBook = async (req, res) =>{
   }
 }
 
+const updateBook = async (req, res) =>{
+  try{
+    const { id } = req.params;
+    const book = await Book.findByIdAndUpdate(id, req.body)
+
+    if(!book){
+      return res.status(404).json({message: "Book not found"})
+    }
+    const updatedBook = await Book.findById(id)
+    res.status(200).json(updatedBook)
+
+  }catch (err){
+    res.status(500).json({message: err.message})
+  }
+}
+
 //Atualiza um livro inteiro
 const updatefullBook = async (req, res) =>{
   try{
@@ -67,4 +83,4 @@ const deleteBook = async (req, res) =>{
 }
 
 
-module.exports = {getBooks, getBook, createBook, updatefullBook, deleteBook}
+module.exports = {getBooks, getBook, createBook, updateBook, updatefullBook, deleteBook}

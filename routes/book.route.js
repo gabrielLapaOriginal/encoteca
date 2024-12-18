@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router()
-const { getBooks, getBook, createBook, updatefullBook, deleteBook } = require('../service/book.service.js')
+const { getBooks, getBook, createBook, updateBook, updatefullBook, deleteBook } = require('../service/book.service.js')
 
 /** 
  * @openapi
@@ -66,6 +66,32 @@ const { getBooks, getBook, createBook, updatefullBook, deleteBook } = require('.
  *   put:
  *     tags:
  *       - Books
+ *     description: Update a full book by ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "675b18533a27472a31f5b283"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Book'
+ *     responses:
+ *       200:
+ *         description: Book updated successfully
+ *       404:
+ *         description: Book not found
+ */
+/**
+ * @openapi
+ * /api/books/{id}:
+ *   patch:
+ *     tags:
+ *       - Books
  *     description: Update a book by ID
  *     parameters:
  *       - name: id
@@ -110,6 +136,7 @@ router.get('/', getBooks);
 router.get('/:id', getBook);
 router.post('/', createBook)
 router.put('/:id', updatefullBook)
+router.patch('/:id', updateBook)
 router.delete('/:id', deleteBook)
 
 

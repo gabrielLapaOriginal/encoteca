@@ -34,6 +34,7 @@ const createBook = async (req, res) =>{
   }
 }
 
+//atualiza parte de um livro
 const updateBook = async (req, res) =>{
   try{
     const { id } = req.params;

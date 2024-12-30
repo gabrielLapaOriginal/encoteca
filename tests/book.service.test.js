@@ -3,6 +3,8 @@ const Book = require("../models/book.model");
 
 jest.mock("../models/book.model");
 
+const mockBook = {title: "Book 1", id: "123", author: "old author"};
+
 describe("Get all books Controller", () => {
   
   afterEach(() => {
@@ -21,14 +23,10 @@ describe("Get all books Controller", () => {
     });
 
     it("Should return status code 200", () =>{
-      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.status.mock.calls[0][0]).toBe(200);
     });
     
-    it("Should return all books in the response", () => {
-      expect(res.json).toHaveBeenCalledWith(mockBooks);
-    });
-    
-    it("Should pass the mockBooks in the response", () => {
+    it("Should return all books", () => {
       expect(res.json.mock.calls[0][0]).toEqual(mockBooks);
     });
 
@@ -43,10 +41,10 @@ describe("Get all books Controller", () => {
     });
 
     it("Should return status code 500", () =>{
-      expect(res.status).toHaveBeenCalledWith(500)
+      expect(res.status.mock.calls[0][0]).toBe(500);
     });
     it("Should return a error message", () =>{
-      expect(res.json).toHaveBeenCalledWith({message: errorMessage})
+      expect(res.json.mock.calls[0][0]).toEqual({message: errorMessage});
     });
   });
 });
@@ -59,7 +57,6 @@ describe("Get one book controller", () => {
 
   const req = { params: { id: "123"}};
   const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
-  const mockBook = { title: 'Book 1' };
 
   describe("Get one book", () => {
 
@@ -68,13 +65,13 @@ describe("Get one book controller", () => {
       await getBook(req, res);
     });
     it("Should return status code 200", () =>{
-      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.status.mock.calls[0][0]).toBe(200);
     });
 
-    it("Should pass the id of the book to the function", () => {
+    it("Should pass get the book with the right ID", () => {
       expect(Book.findById).toHaveBeenCalledWith("123");
     });
-    it("Should pass the correct book in the response", () => {
+    it("Should return the right book", () => {
       expect(res.json.mock.calls[0][0]).toEqual(mockBook);
     });
   }); 
@@ -88,10 +85,10 @@ describe("Get one book controller", () => {
     });
 
     it("Should return status code of 500", () => {
-      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.status.mock.calls[0][0]).toBe(500);
     });
     it("Should return a error message", () => {
-      expect(res.json).toHaveBeenCalledWith({message: errorMessage});
+      expect(res.json.mock.calls[0][0]).toEqual({message: errorMessage});
     });
   });
 });
@@ -102,7 +99,6 @@ describe("Post a book controller", () => {
     jest.clearAllMocks();
   });
 
-  const mockBook = {title: "New book"}
   const req = { body: mockBook };
   const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
@@ -114,13 +110,13 @@ describe("Post a book controller", () => {
     });
 
     it("Should return status code 200", () => {
-      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.status.mock.calls[0][0]).toBe(200);
     });
-    it("Should pass the mockBook to the function", () => {
-      expect(Book.create).toHaveBeenCalledWith(mockBook);
+    it("Should create a new book sucefully", () => {
+      expect(Book.create.mock.calls[0][0]).toEqual(mockBook);
     });
-    it("Should pass the mockBook in the response", () => {
-      expect(res.json).toHaveBeenCalledWith(mockBook);
+    it("Should return the created book", () => {
+      expect(res.json.mock.calls[0][0]).toEqual(mockBook);
     });
   });
 
@@ -128,14 +124,14 @@ describe("Post a book controller", () => {
     const errorMessage = "Error creating book";
     beforeEach(async () =>{
       Book.create.mockRejectedValue(new Error(errorMessage));
-      await createBook(req, res)
+      await createBook(req, res);
     });
 
     it("Should return status code of 500", () => {
-      expect(res.status).toHaveBeenCalledWith(500)
+      expect(res.status.mock.calls[0][0]).toBe(500);
     });
     it("Should return a message error", () => {
-      expect(res.json).toHaveBeenCalledWith({message: errorMessage})
+      expect(res.json.mock.calls[0][0]).toEqual({message: errorMessage})
     })
   });
 });
@@ -145,7 +141,6 @@ describe("Update part of a book controller", () => {
     jest.clearAllMocks();
 });
 
-  const mockBook = { title: "Updated book" };
   const req = {params: {id: "123"}, body: {title: "Updated title"}};
   const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
@@ -154,17 +149,19 @@ describe("Update part of a book controller", () => {
     beforeEach(async() => {
       Book.findByIdAndUpdate.mockResolvedValue(mockBook);
       Book.findById.mockResolvedValue(mockBook);
-      await updateBook(req, res)
+      await updateBook(req, res);
     });
 
     it("Should return status code 200", () => {
-      expect(res.status).toHaveBeenCalledWith(200)
+      expect(res.status.mock.calls[0][0]).toBe(200);
     });
-    it("Should pass the mockBook id and title to the function", () => {
-      expect(Book.findByIdAndUpdate).toHaveBeenCalledWith("123", {title: "Updated title"})
+    it("Should update the book with the new title", () => {
+      const [calledId, updateBody] = Book.findByIdAndUpdate.mock.calls[0]
+      expect(calledId).toBe("123");
+      expect(updateBody).toEqual({ title: "Updated title" });
     });
-    it("Should pass the mockBook in the response", () => {
-      expect(res.json).toHaveBeenCalledWith(mockBook);
+    it("Should return the updated book", () => {
+      expect(res.json.mock.calls[0][0]).toEqual(mockBook);
     });
   });
 
@@ -175,10 +172,10 @@ describe("Update part of a book controller", () => {
     });
 
     it("Should return status code of 404", () => {
-      expect(res.status).toHaveBeenCalledWith(404)
+      expect(res.status.mock.calls[0][0]).toBe(404);
     });
     it("Should return a error message", () => {
-      expect(res.json).toHaveBeenCalledWith({message: "Book not found"})
+      expect(res.json.mock.calls[0][0]).toEqual({message: "Book not found"});
     });
   });
 });
@@ -188,8 +185,7 @@ describe("Update full book controller", () => {
     jest.clearAllMocks();
   });
 
-  const mockBook = {title: "Updated book"};
-  const req = { params: {id: "123"}, body: {title: "Updated title"} };
+  const req = { params: {id: "123"}, body: {title: "Updated title", author: "New author"} };
   const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
   describe("Update full book", () => {
@@ -199,13 +195,15 @@ describe("Update full book controller", () => {
       await updatefullBook(req, res);
     });
     it("Should return status code of 200", () => {
-      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.status.mock.calls[0][0]).toBe(200);
     });
-    it("Should pass the mockBook id and title to the function", () => {
-      expect(Book.findByIdAndUpdate).toHaveBeenCalledWith("123", {title: "Updated title"});
+    it("Should update the full book (title and author)", () => {
+      const [calledId, updatedBody] = Book.findByIdAndUpdate.mock.calls[0]
+      expect(calledId).toBe("123");
+      expect(updatedBody).toEqual({ title: "Updated title", author: "New author"});
     });
-    it("Should pass the mockBook in the response", () => {
-      expect(res.json).toHaveBeenCalledWith(mockBook);
+    it("Should return the updated book", () => {
+      expect(res.json.mock.calls[0][0]).toEqual(mockBook);
     });
   });
   describe("Errors in update full book", () => {
@@ -215,10 +213,10 @@ describe("Update full book controller", () => {
     });
 
     it("Should return status code of 404", () => {
-      expect(res.status).toHaveBeenCalledWith(404)
+      expect(res.status.mock.calls[0][0]).toBe(404);
     });
     it("Should return a error message", () => {
-      expect(res.json).toHaveBeenCalledWith({message: "Book not found"})
+      expect(res.json.mock.calls[0][0]).toEqual({message: "Book not found"});
     });
   });
 });
@@ -228,24 +226,24 @@ describe("Delete a book controller", () =>{
     jest.clearAllMocks();
   });
 
-  const mockBook = { id: "123", title: "Deleted book" };
+  const deletedMockBook = { id: "123", title: "Deleted book" };
   const req = { params: {id: "123"} };
   const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
   describe("Delete a book", () => {
     beforeEach(async() => {
-      Book.findByIdAndDelete.mockResolvedValue(mockBook);
+      Book.findByIdAndDelete.mockResolvedValue(deletedMockBook);
       await deleteBook(req, res);
     });
 
     it("Should return status code of 200", () => {
-      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.status.mock.calls[0][0]).toBe(200);
     });
-    it("Should pass the mockBook id to the function", () => {
-      expect(Book.findByIdAndDelete).toHaveBeenCalledWith("123");
+    it("Should delete the book with the id passed", () => {
+      expect(Book.findByIdAndDelete.mock.calls[0][0]).toBe("123");
     });
     it("Should return a confirmation message", () => {
-      expect(res.json).toHaveBeenCalledWith({message: "Book deleted"})
+      expect(res.json.mock.calls[0][0]).toEqual({message: "Book deleted"});
     });
   });
 
@@ -256,10 +254,10 @@ describe("Delete a book controller", () =>{
     });
 
     it("Should return status code of 404", () => {
-      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.status.mock.calls[0][0]).toBe(404);
     });
     it("Should return a not found message", () => {
-      expect(res.json).toHaveBeenCalledWith({message: "Book not found"});
+      expect(res.json.mock.calls[0][0]).toEqual({message: "Book not found"});
     });
   });
 });

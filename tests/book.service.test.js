@@ -29,7 +29,6 @@ describe("Get all books Controller", () => {
     it("Should return all books", () => {
       expect(res.json.mock.calls[0][0]).toEqual(mockBooks);
     });
-
   });
 
   describe("Errors in get all books", () => {

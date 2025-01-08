@@ -13,7 +13,7 @@ const options = {
     components:{
       schemas: {
         Book: {
-          type: 'object',
+          type: "object",
           properties: {
             title: { type: "string", description: "The title of the book" },
             author: { type: "string", description: "The author of the book" },
@@ -23,7 +23,19 @@ const options = {
             price: { type: "number", description: "The price of the book" },
             image: { type: "string", description: "The image URL of the book cover" },
           },
-          required: ["title", "author", "publishedDate", "genre", "summary", "price"], // Campos obrigatórios
+          required: ["title", "author", "publishedDate", "genre", "summary", "price"],
+        },
+        Author: {
+          type: "object",
+          properties: {
+            name: {type: "string", description: "The name of the author"},
+            birthDate: {type: "string", format: "date", description: "The birth date of the author"},
+            nationality: {type: "string", description: "The nationality of the author"},
+            image: {type: "string", description: "The image URL of the author"},
+            genres: {type: "array", items: {type: "string"}, description: "Genres the author specializes in"},
+            books: {type: "array", items: {type: "string"}, description: "Books written by the author"}
+          },
+          required: ["name","birthDate", "nationality", "image", "genres"],
         },
       },
       "responses": {
@@ -40,7 +52,7 @@ const options = {
           }
         },
         "404": {
-          "description": "Book not found"
+          "description": "Not found"
         },
         "500": {
           "description": "Internal Server Error "
@@ -60,7 +72,7 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/book.route.js"]
+  apis: ["./routes/book.route.js", "./routes/author.route.js"]
 };
 
 const swaggerSpec = swaggerJsdoc(options)

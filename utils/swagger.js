@@ -33,7 +33,6 @@ const options = {
             nationality: {type: "string", description: "The nationality of the author"},
             image: {type: "string", description: "The image URL of the author"},
             genres: {type: "array", items: {type: "string"}, description: "Genres the author specializes in"},
-            books: {type: "array", items: {type: "string"}, description: "Books written by the author"}
           },
           required: ["name","birthDate", "nationality", "image", "genres"],
         },

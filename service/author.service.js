@@ -1,4 +1,5 @@
 const Author = require("../models/author.model")
+const Book = require("../models/book.model")
 
 //Retorna todos os autores
 const getAuthors = async(req, res) => {
@@ -21,7 +22,15 @@ const getAuthor = async(req, res) => {
   try{
     const { id } = req.params;
     const author = await Author.findById(id);
-    res.status(200).json(author);
+
+    if(!author){
+      res.status(404).json({message: "Author not found"});
+    }
+    const books = await Book.find({author: author.name})
+    res.status(200).json({
+      ...author.toObject(),
+      books
+    });
   }catch(err){
     res.status(500).json({message: err.message})
   }

@@ -22,10 +22,6 @@ const AuthorSchema = new mongoose.Schema(
       type: [String],
       required: [true, "Please insert the genres the author writes "]
     },
-    books: {
-      type: [String],
-      required: [true, "Please insert the books written by the author"]
-    }
   },
   {
     timestamps: true,

@@ -1,6 +1,15 @@
-const mongoose = require("mongoose");
+import mongoose, { Document } from "mongoose";
 
-const BookSchema = new mongoose.Schema(
+interface Book extends Document {
+  title: string;
+  author: string;
+  publishedDate: Date;
+  genre: string;
+  summary: string;
+  price: number;
+  image: string;
+}
+const BookSchema = new mongoose.Schema<Book>(
   {
     title: {
       type: String,
@@ -45,4 +54,4 @@ const BookSchema = new mongoose.Schema(
 
 const Book = mongoose.model("Book", BookSchema);
 
-module.exports = Book
+export default Book;

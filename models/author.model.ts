@@ -1,6 +1,14 @@
-const mongoose = require("mongoose");
+import mongoose, { Document } from "mongoose";
 
-const AuthorSchema = new mongoose.Schema(
+interface Author extends Document {
+  name: string,
+  birthDate: Date,
+  nationality: string,
+  image: string,
+  genres: [string]
+}
+
+const AuthorSchema = new mongoose.Schema<Author>(
   {
     name: {
       type: String,
@@ -29,5 +37,4 @@ const AuthorSchema = new mongoose.Schema(
 );
 
   const Author = mongoose.model("Author", AuthorSchema);
-
-module.exports = Author
+  export default Author

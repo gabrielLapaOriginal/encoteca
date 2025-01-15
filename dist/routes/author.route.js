@@ -1,8 +1,12 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const router = express.Router();
-const {getAuthors, getAuthor, createAuthor, updateAuthor, updateFullAuthor, deleteAuthor} = require("../service/author.service");
-
-/** 
+const author_service_1 = __importDefault(require("../service/author.service"));
+/**
  * @openapi
  * /api/authors/:
  *   get:
@@ -132,13 +136,10 @@ const {getAuthors, getAuthor, createAuthor, updateAuthor, updateFullAuthor, dele
  *       404:
  *         description: Author not found
  */
-
-router.get("/authors", getAuthors);
-router.get("/authors/:id", getAuthor);
-router.post("/authors", createAuthor);
-router.put("/authors/:id", updateFullAuthor);
-router.patch("/authors/:id", updateAuthor);
-router.delete("/authors/:id", deleteAuthor);
-
-
-module.exports = router
+router.get("/authors", author_service_1.default.getAuthors);
+router.get("/authors/:id", author_service_1.default.getAuthor);
+router.post("/authors", author_service_1.default.createAuthor);
+router.put("/authors/:id", author_service_1.default.updateFullAuthor);
+router.patch("/authors/:id", author_service_1.default.updateAuthor);
+router.delete("/authors/:id", author_service_1.default.deleteAuthor);
+exports.default = router;

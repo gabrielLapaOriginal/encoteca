@@ -1,31 +1,31 @@
 const express = require("express");
-const router = express.Router()
-const { getBooks, getBook, createBook, updateBook, updatefullBook, deleteBook } = require('../service/book.service.js')
+const router = express.Router();
+import AuthorController from "../service/author.service";
 
 /** 
  * @openapi
- * /api/books/:
+ * /api/authors/:
  *   get:
  *     tags:
- *       - Books
- *     description: Retrieve all books
+ *       - Authors
+ *     description: Retrieve all authors
  *     responses:
  *       200:
- *         description: A list of books
+ *         description: A list of authors
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Book'
+ *                 $ref: '#/components/schemas/Authors'
  */
 /**
  * @openapi
- * /api/books/{id}:
+ * /api/authors/{id}:
  *   get:
  *     tags:
- *       - Books
- *     description: Retrieve a book by ID
+ *       - Authors
+ *     description: Retrieve a author by ID
  *     parameters:
  *       - name: id
  *         in: path
@@ -35,38 +35,38 @@ const { getBooks, getBook, createBook, updateBook, updatefullBook, deleteBook } 
  *           example: "675b18533a27472a31f5b283"
  *     responses:
  *       200:
- *         description: A single book
+ *         description: A single authors
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Book'
+ *               $ref: '#/components/schemas/Authors'
  *       404:
- *         description: Book not found
+ *         description: author not found
  */
 /**
  * @openapi
- * /api/books/:
+ * /api/authors/:
  *   post:
  *     tags:
- *       - Books
- *     description: Create a new book
+ *       - Authors
+ *     description: Create a new author
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Book'
+ *             $ref: '#/components/schemas/Author'
  *     responses:
  *       201:
- *         description: Book created successfully
+ *         description: Author created successfully
  */
 /**
  * @openapi
- * /api/books/{id}:
+ * /api/authors/{id}:
  *   put:
  *     tags:
- *       - Books
- *     description: Update a full book by ID
+ *       - Authors
+ *     description: Update a full author by ID
  *     parameters:
  *       - name: id
  *         in: path
@@ -79,20 +79,20 @@ const { getBooks, getBook, createBook, updateBook, updatefullBook, deleteBook } 
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Book'
+ *             $ref: '#/components/schemas/Author'
  *     responses:
  *       200:
- *         description: Book updated successfully
+ *         description: Author updated successfully
  *       404:
- *         description: Book not found
+ *         description: Author not found
  */
 /**
  * @openapi
- * /api/books/{id}:
+ * /api/authors/{id}:
  *   patch:
  *     tags:
- *       - Books
- *     description: Update a book by ID
+ *       - Authors
+ *     description: Update a author by ID
  *     parameters:
  *       - name: id
  *         in: path
@@ -105,20 +105,20 @@ const { getBooks, getBook, createBook, updateBook, updatefullBook, deleteBook } 
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Book'
+ *             $ref: '#/components/schemas/Author'
  *     responses:
  *       200:
- *         description: Book updated successfully
+ *         description: Author updated successfully
  *       404:
- *         description: Book not found
+ *         description: Author not found
  */
 /**
  * @openapi
- * /api/books/{id}:
+ * /api/authors/{id}:
  *   delete:
  *     tags:
- *       - Books
- *     description: Delete a book by ID
+ *       - Authors
+ *     description: Delete a author by ID
  *     parameters:
  *       - name: id
  *         in: path
@@ -128,16 +128,17 @@ const { getBooks, getBook, createBook, updateBook, updatefullBook, deleteBook } 
  *           example: "675b18533a27472a31f5b283"
  *     responses:
  *       200:
- *         description: Book deleted successfully
+ *         description: Author deleted successfully
  *       404:
- *         description: Book not found
+ *         description: Author not found
  */
-router.get('/books', getBooks);
-router.get('/books/:id', getBook);
-router.post('/books', createBook)
-router.put('/books/:id', updatefullBook)
-router.patch('/books/:id', updateBook)
-router.delete('/books/:id', deleteBook)
+
+router.get("/authors", AuthorController.getAuthors);
+router.get("/authors/:id", AuthorController.getAuthor);
+router.post("/authors", AuthorController.createAuthor);
+router.put("/authors/:id", AuthorController.updateFullAuthor);
+router.patch("/authors/:id", AuthorController.updateAuthor);
+router.delete("/authors/:id", AuthorController.deleteAuthor);
 
 
-module.exports = router;
+export default router

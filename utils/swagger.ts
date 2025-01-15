@@ -1,7 +1,7 @@
-const express = require('express');
-const swaggerJsdoc = require('swagger-jsdoc')
-const swaggerUi = require('swagger-ui-express')
-const { version } = require('../package.json')
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import { version } from '../package.json';
+import { Application, Request, Response } from 'express';
 
 const options = {
   definition:{
@@ -71,22 +71,22 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/book.route.js", "./routes/author.route.js"]
+  apis: ["./routes/book.route.ts", "./routes/author.route.ts"]
 };
 
 const swaggerSpec = swaggerJsdoc(options)
 
-function swaggerDocs(app, port) {
-// Swagger page
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+function swaggerDocs(app: Application, port: number) {
+  // Swagger page
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-//Docs in JSON format
-app.get('/docs.json', (req, res) =>{
-  res.setHeader('Content-Type', 'application/json');
-  res.send(swaggerSpec);
-})
+  // Docs in JSON format
+  app.get('/docs.json', (req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+  });
 
-  console.log(`Docs avalible at http://localhost:${port}/docs`);
+  console.log(`Docs available at http://localhost:${port}/docs`);
 }
 
-module.exports = swaggerDocs
+export default swaggerDocs
